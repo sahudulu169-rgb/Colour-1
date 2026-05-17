@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming & Rewards Dashboard | RewardHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #00d4ff;
+            --primary-purple: #7c3aed;
+            --primary-orange: #ff6b35;
+            --dark-bg: #0f0f1e;
+            --card-bg: rgba(20, 20, 35, 0.8);
+            --card-border: rgba(0, 212, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0d0;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            background: linear-gradient(135deg, rgba(20, 20, 35, 0.9) 0%, rgba(20, 20, 35, 0.7) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 20px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d4ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo i {
+            color: #00d4ff;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .balance-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .coins-balance {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.1));
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+        }
+
+        .coins-balance i {
+            color: #ffd700;
+            font-size: 18px;
+        }
+
+        .balance-text {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .balance-rupee {
+            color: var(--primary-orange);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .conversion-banner {
+            background: linear-gradient(135deg, var(--primary-orange), #ff8c42);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-blue);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .user-profile img:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        /* ========== MAIN DASHBOARD ========== */
+        .dashboard-main {
+            padding: 40px 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .view-all {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .view-all:hover {
+            gap: 12px;
+            color: var(--primary-orange);
+        }
+
+        .task-count, .day-count {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(168, 85, 247, 0.2));
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary-blue);
+            border: 1px solid var(--card-border);
+        }
+
+        /* ========== PLAY & EARN SECTION ========== */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(20, 20, 35, 0.6) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .game-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.2);
+            transform: translateY(-8px);
+        }
+
+        .game-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .game-icon.ludo {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.05));
+            color: #00d4ff;
+        }
+
+        .game-icon.puzzle {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.05));
+            color: #a855f7;
+        }
+
+        .game-icon.arcade {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(255, 107, 53, 0.05));
+            color: #ff6b35;
+        }
+
+        .game-icon.bubble {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
+            color: #10b981;
+        }
+
+        .game-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .game-earn {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .play-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-blue), #00a8cc);
+            border: none;
+            color: var(--dark-bg);
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-btn:hover {
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* ========== TASK CENTER ========== */
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .task-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(20, 20, 35, 0.6) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .task-header {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .task-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 24px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(168, 85, 247, 0.2));
+            color: var(--primary-blue);
+        }
+
+        .task-info h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .task-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-badge.completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-badge.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        /* ========== DAILY REWARDS & SPIN ========== */
+        .daily-rewards-spin {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .daily-checkin, .spin-wheel-section {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(20, 20, 35, 0.6) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .day-card {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .day-card.completed {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .day-card.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(168, 85, 247, 0.2));
+            border-color: var(--primary-blue);
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .day-card.locked {
+            background: rgba(255, 107, 53, 0.05);
+            border-color: var(--card-border);
+            opacity: 0.5;
+        }
+
+        .day-card.grand-prize {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.3), rgba(255, 215, 0, 0.1));
+            border-color: var(--primary-orange);
+            opacity: 1;
+        }
+
+        .day-num {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .coin-reward {
+            font-size: 11px;
+            color: #ffd700;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .checkin-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-blue), #00a8cc);
+            border: none;
+            color: var(--dark-bg);
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkin-btn:hover {
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+        }
+
+        /* ========== FORTUNE WHEEL ========== */
+        .wheel-container {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .fortune-wheel {
+            width: 280px;
+            height: 280px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .wheel-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 8px 24px rgba(0, 212, 255, 0.2));
+        }
+
+        .wheel-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .wheel-inner {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(168, 85, 247, 0.3));
+            border: 2px solid var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .center-coin {
+            width: 120px;
+            height: 120px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid var(--primary-orange);
+            z-index: 20;
+            transform: translateX(-50%);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .wheel-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .prize-display {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .prize-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .prize-amount {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-orange), #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .prize-rupee {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .spins-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+        }
+
+        .spin-count {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+
+        .spin-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .spin-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-orange), #ff8c42);
+            border: none;
+            color: white;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+        }
+
+        .spin-btn:hover {
+            box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
+            transform: scale(1.05);
+        }
+
+        .spin-info {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .timer {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        /* ========== REFER & EARN ========== */
+        .refer-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(20, 20, 35, 0.6) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .refer-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .refer-header i {
+            font-size: 32px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .refer-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .refer-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .referral-link-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: rgba(0, 212, 255, 0.05);
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+        }
+
+        .referral-link {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 12px;
+            padding: 8px 12px;
+            outline: none;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, var(--primary-blue), #00a8cc);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+        }
+
+        .refer-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 12px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .share-banner {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(255, 215, 0, 0.1));
+            border: 1px solid var(--primary-orange);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-orange);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .share-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--card-border);
+            background: rgba(0, 212, 255, 0.05);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .share-btn:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .refer-illustration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            color: rgba(0, 212, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .refer-card {
+                grid-template-columns: 1fr;
+            }
+
+            .refer-illustration {
+                font-size: 80px;
+            }
+        }
+
+        /* ========== WITHDRAW & REDEEM ========== */
+        .withdraw-redeem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .withdraw-card, .recharge-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(20, 20, 35, 0.6) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header {
+            margin-bottom: 24px;
+        }
+
+        .card-header h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #00d4ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .available-balance, .card-subtext {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .payment-method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-blue);
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .method-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            font-size: 24px;
+        }
+
+        .method-icon.upi {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.05));
+            color: var(--primary-blue);
+        }
+
+        .method-icon.phonepe {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.05));
+        }
+
+        .method-icon.phonepe img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .method-icon.googlepay {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(255, 107, 53, 0.05));
+        }
+
+        .method-icon.googlepay img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .method-icon.bank {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
+            color: var(--success);
+        }
+
+        .payment-method span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .withdraw-btn, .view-plans-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-blue), #00a8cc);
+            border: none;
+            color: var(--dark-bg);
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .withdraw-btn:hover {
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+            transform: scale(1.02);
+        }
+
+        .recharge-form {
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .phone-input {
+            flex: 1;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid var(--card-border);
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .phone-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
+        }
+
+        .phone-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .view-plans-btn {
+            padding: 12px 20px;
+            white-space: nowrap;
+        }
+
+        .operator-logos {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .operator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 16px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .operator:hover {
+            border-color: var(--primary-blue);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .operator img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 8px;
+            object-fit: contain;
+        }
+
+        .operator span {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .withdraw-redeem-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .daily-rewards-spin {
+                grid-template-columns: 1fr;
+            }
+
+            .wheel-container {
+                flex-direction: column;
+            }
+        }
+
+        /* ========== MOBILE BOTTOM NAVIGATION ========== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(20, 20, 35, 0.95) 0%, rgba(20, 20, 35, 0.85) 100%);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 70px;
+            z-index: 200;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            height: 100%;
+            width: 100%;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--primary-blue);
+        }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-blue);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-purple);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .dashboard-main {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .dashboard-main {
+                padding: 20px 15px;
+            }
+
+            .section-header h2 {
+                font-size: 22px;
+            }
+
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .tasks-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">
+                        <i class="fas fa-gamepad"></i>
+                        <span>RewardHub</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="balance-display">
+                        <div class="coins-balance">
+                            <i class="fas fa-coins"></i>
+                            <span class="balance-text">12,500 Coins</span>
+                            <span class="balance-rupee">(₹125.00)</span>
+                        </div>
+                    </div>
+                    <div class="conversion-banner">
+                        <span class="conversion-text">1000 Coins = ₹10</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user" alt="Profile">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-main">
+            <!-- Play & Earn Section -->
+            <section class="section play-earn">
+                <div class="section-header">
+                    <h2>Play & Earn</h2>
+                    <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="game-icon ludo">
+                            <i class="fas fa-dice"></i>
+                        </div>
+                        <h3>Ludo</h3>
+                        <p class="game-earn">₹50 - ₹500</p>
+                        <button class="play-btn">Play Now</button>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-icon puzzle">
+                            <i class="fas fa-puzzle-piece"></i>
+                        </div>
+                        <h3>Puzzle</h3>
+                        <p class="game-earn">₹100 - ₹1000</p>
+                        <button class="play-btn">Play Now</button>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-icon arcade">
+                            <i class="fas fa-bomb"></i>
+                        </div>
+                        <h3>Arcade</h3>
+                        <p class="game-earn">₹25 - ₹250</p>
+                        <button class="play-btn">Play Now</button>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-icon bubble">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                        <h3>Bubble Shooter</h3>
+                        <p class="game-earn">₹75 - ₹750</p>
+                        <button class="play-btn">Play Now</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Task Center Section -->
+            <section class="section task-center">
+                <div class="section-header">
+                    <h2>Task Center</h2>
+                    <span class="task-count">3 Active</span>
+                </div>
+                <div class="tasks-grid">
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="task-info">
+                                <h4>Install App</h4>
+                                <p>Download our mobile app</p>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>1000 / 1000 Coins</span>
+                            <span class="status-badge completed">Completed</span>
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="task-info">
+                                <h4>Refer Friend</h4>
+                                <p>Invite 3 friends</p>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 66%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>2 / 3 Friends</span>
+                            <span class="status-badge pending">In Progress</span>
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="task-info">
+                                <h4>Watch Videos</h4>
+                                <p>Watch 5 promotional videos</p>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 40%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>2 / 5 Videos</span>
+                            <span class="status-badge pending">In Progress</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Daily Rewards & Spin Section -->
+            <section class="section daily-rewards-spin">
+                <!-- Daily Check-in Calendar -->
+                <div class="daily-checkin">
+                    <div class="section-header">
+                        <h2>Daily Check-in</h2>
+                        <span class="day-count">Day 5 of 7</span>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="day-card completed">
+                            <span class="day-num">1</span>
+                            <span class="coin-reward">+100</span>
+                        </div>
+                        <div class="day-card completed">
+                            <span class="day-num">2</span>
+                            <span class="coin-reward">+150</span>
+                        </div>
+                        <div class="day-card completed">
+                            <span class="day-num">3</span>
+                            <span class="coin-reward">+200</span>
+                        </div>
+                        <div class="day-card completed">
+                            <span class="day-num">4</span>
+                            <span class="coin-reward">+250</span>
+                        </div>
+                        <div class="day-card active">
+                            <span class="day-num">5</span>
+                            <span class="coin-reward">+300</span>
+                        </div>
+                        <div class="day-card locked">
+                            <span class="day-num">6</span>
+                            <span class="coin-reward">+500</span>
+                        </div>
+                        <div class="day-card locked grand-prize">
+                            <span class="day-num">7</span>
+                            <span class="coin-reward">1 Lakh</span>
+                        </div>
+                    </div>
+                    <button class="checkin-btn">Claim Today's Reward</button>
+                </div>
+
+                <!-- Spin & Win Fortune Wheel -->
+                <div class="spin-wheel-section">
+                    <div class="section-header">
+                        <h2>Spin & Win</h2>
+                    </div>
+                    <div class="wheel-container">
+                        <div class="fortune-wheel">
+                            <svg viewBox="0 0 400 400" class="wheel-svg">
+                                <defs>
+                                    <linearGradient id="wheelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.3" />
+                                        <stop offset="50%" style="stop-color:#a855f7;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:0.3" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="200" cy="200" r="190" fill="url(#wheelGradient)" stroke="#00d4ff" stroke-width="2"/>
+                                <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(0, 212, 255, 0.2)" stroke-width="1" stroke-dasharray="5,5"/>
+                            </svg>
+                            <div class="wheel-overlay">
+                                <div class="wheel-inner">
+                                    <i class="fas fa-trophy" style="font-size: 80px; color: #ffd700;"></i>
+                                </div>
+                            </div>
+                            <div class="wheel-pointer"></div>
+                        </div>
+                        <div class="wheel-info">
+                            <div class="prize-display">
+                                <span class="prize-label">Grand Prize</span>
+                                <span class="prize-amount">1 Lakh Coins</span>
+                                <span class="prize-rupee">₹10,000</span>
+                            </div>
+                            <div class="spins-left">
+                                <span class="spin-count">1</span>
+                                <span class="spin-label">Free Spin Left</span>
+                            </div>
+                            <button class="spin-btn">
+                                <i class="fas fa-certificate"></i>
+                                Spin Now
+                            </button>
+                            <p class="spin-info">Next spin in <span class="timer">23:45:12</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Refer & Earn Section -->
+            <section class="section refer-earn">
+                <div class="refer-card">
+                    <div class="refer-content">
+                        <div class="refer-header">
+                            <i class="fas fa-share-alt"></i>
+                            <h2>Refer & Earn</h2>
+                        </div>
+                        <p class="refer-description">Invite your friends and earn massive rewards!</p>
+                        <div class="referral-link-container">
+                            <input type="text" class="referral-link" value="https://rewaidhub.app/ref/user_12345" readonly>
+                            <button class="copy-btn" onclick="copyReferral()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="refer-stats">
+                            <div class="stat">
+                                <span class="stat-number">5</span>
+                                <span class="stat-label">Friends Invited</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">₹500</span>
+                                <span class="stat-label">Earned</span>
+                            </div>
+                        </div>
+                        <div class="share-banner">
+                            <i class="fas fa-star"></i>
+                            <span>Share & Earn 1000 Coins (₹10)</span>
+                        </div>
+                        <div class="share-buttons">
+                            <button class="share-btn whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                WhatsApp
+                            </button>
+                            <button class="share-btn facebook">
+                                <i class="fab fa-facebook"></i>
+                                Facebook
+                            </button>
+                            <button class="share-btn twitter">
+                                <i class="fab fa-twitter"></i>
+                                Twitter
+                            </button>
+                        </div>
+                    </div>
+                    <div class="refer-illustration">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Withdraw & Redeem Section -->
+            <section class="section withdraw-redeem">
+                <div class="withdraw-redeem-grid">
+                    <!-- Withdraw/Cash Out -->
+                    <div class="withdraw-card">
+                        <div class="card-header">
+                            <h3>Withdraw & Redeem</h3>
+                            <p class="available-balance">Available: ₹125.00</p>
+                        </div>
+                        <div class="payment-methods">
+                            <div class="payment-method">
+                                <div class="method-icon upi">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <span>UPI</span>
+                            </div>
+                            <div class="payment-method">
+                                <div class="method-icon phonepe">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23112e7f' width='200' height='200'/%3E%3Ctext x='100' y='120' font-size='80' font-weight='bold' fill='%23fff' text-anchor='middle'%3EPP%3C/text%3E%3C/svg%3E" alt="PhonePe">
+                                </div>
+                                <span>PhonePe</span>
+                            </div>
+                            <div class="payment-method">
+                                <div class="method-icon googlepay">
+                                    <i class="fab fa-google"></i>
+                                </div>
+                                <span>Google Pay</span>
+                            </div>
+                            <div class="payment-method">
+                                <div class="method-icon bank">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <span>Bank Transfer</span>
+                            </div>
+                        </div>
+                        <button class="withdraw-btn">Withdraw Now</button>
+                    </div>
+
+                    <!-- Mobile Recharge & Redeem -->
+                    <div class="recharge-card">
+                        <div class="card-header">
+                            <h3>Mobile Recharge</h3>
+                            <p class="card-subtext">Use coins to recharge</p>
+                        </div>
+                        <div class="recharge-form">
+                            <div class="input-group">
+                                <input type="tel" class="phone-input" placeholder="Enter phone number" maxlength="10">
+                                <button class="view-plans-btn">View Plans</button>
+                            </div>
+                        </div>
+                        <div class="operator-logos">
+                            <div class="operator">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff3b30, #ff9900); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px; margin-bottom: 8px;">A</div>
+                                <span>Airtel</span>
+                            </div>
+                            <div class="operator">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ffd700, #ff6b00); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px; margin-bottom: 8px;">J</div>
+                                <span>Jio</span>
+                            </div>
+                            <div class="operator">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff3b30, #fc5a8d); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px; margin-bottom: 8px;">V</div>
+                                <span>Vi</span>
+                            </div>
+                            <div class="operator">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #1a73e8, #4285f4); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px; margin-bottom: 8px;">B</div>
+                                <span>BSNL</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-gamepad"></i>
+                <span>Games</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-tasks"></i>
+                <span>Tasks</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        function copyReferral() {
+            const referralInput = document.querySelector('.referral-link');
+            referralInput.select();
+            document.execCommand('copy');
+            alert('Referral link copied to clipboard!');
+        }
+
+        // Active navigation item
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // Spin animation on button click
+        document.querySelector('.spin-btn').addEventListener('click', function() {
+            const wheel = document.querySelector('.fortune-wheel');
+            wheel.style.animation = 'none';
+            setTimeout(() => {
+                wheel.style.animation = 'spin 3s ease-out forwards';
+            }, 10);
+        });
+
+        // Add spin animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes spin {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(3600deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Countdown timer
+        function startCountdown() {
+            let timeLeft = 85512; // 23:45:12 in seconds
+            const timerElement = document.querySelector('.timer');
+            
+            setInterval(() => {
+                timeLeft--;
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const seconds = timeLeft % 60;
+                
+                timerElement.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        startCountdown();
+    </script>
+</body>
+</html>
